@@ -40,12 +40,9 @@ export default class Finance {
         }
  
     }
-    // if (res.price.regularMarketChange.raw > 0) {
-    //   $('.price').attr('style', 'color:lightgreen;')
-    // }
-    // $('.price').append('' + res.price.regularMarketPrice.fmt);
-    // $('.symbol').append(res.price.longName);
-    // $('.change').append('' + res.price.regularMarketChange.fmt + ' ' + res.price.regularMarketChangePercent.fmt)
+
+    $('table').removeClass('hidden');
+    $('.lds-ring').addClass('hidden');
     this.widget.html($('body').html());
   }
 
@@ -68,18 +65,6 @@ export default class Finance {
     await axios.all(requests).then((res) => {
         this.showSummary(res)
     });
-    // axios.get(url, {
-    //   params: {
-    //     'symbol': 'TSLA'
-    //   },
-    //   headers: {
-    //     'x-rapidapi-host': credentials.RapidAPI.host,
-    //     'x-rapidapi-key': credentials.RapidAPI.api_key
-    //   }
-    // }).then((res) => {
-    //   console.log(res)
-    //   this.showSummary(res.data);
-    // })
   }
 
   stayOpen() {
@@ -90,7 +75,7 @@ export default class Finance {
 
   async start() {
     this.widget = this.sdk.createWidget();
-
+    this.widget.html($('body').html())
     await this.getStockSummary();
 
     setInterval(async () => {
