@@ -12,17 +12,36 @@ export default class Finance {
 
   sdk: Sdk;
   widget: any;
-  followed: any;
+  followed = ['TSLA', 'ALEUP.PA', 'BTC-USD', 'MSFT'];
+
+  timeoutID: any;
 
   constructor() {
     this.sdk = new Sdk();
-    this.followed = ['TSLA', 'ALEUP.PA', 'BTC-USD', 'MSFT'];
+    this.sdk.config().subscribe((conf: any) => {
+      this.configChange(conf)
+    })
+  }
+
+  configChange(conf: any) {
+    if (conf.followed) {
+      this.followed = [conf.followed]
+    }
+
+    if (this.timeoutID !== undefined) {
+      clearTimeout(this.timeoutID)
+    }
+
+    this.getStockSummary()
   }
 
   showSummary(res: any) {
+
+    $('tbody').children().remove();
     for (let index = 0; index < res.length; index++) {
       const element = res[index];
-      let newLine = $('table').append('<tr></tr>');
+      $('tbody').append('<tr id="' + index + '"></tr>');
+      let newLine = $('#' + index)
 
       if (element.data.price.longName == null)
         $(newLine).append('<td>' + element.data.price.shortName + '</td>')
@@ -44,9 +63,10 @@ export default class Finance {
     $('table').removeClass('hidden');
     $('.lds-ring').addClass('hidden');
     this.widget.html($('body').html());
+    this.update();
   }
 
-  async getStockSummary() {
+  getStockSummary() {
     let url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary";
     let requests = [];
 
@@ -62,27 +82,25 @@ export default class Finance {
         }
       }))
     }
-    await axios.all(requests).then((res) => {
+    
+    axios.all(requests).then((res: any) => {
         this.showSummary(res)
+    }).catch((err: any) => {
+      console.log(err);
     });
   }
 
-  stayOpen() {
-    while (true) {
-
-    }
+  update() {
+    this.timeoutID = setTimeout(() => {
+      this.getStockSummary();
+    }, 300000);
   }
 
   async start() {
     this.widget = this.sdk.createWidget();
     this.widget.html($('body').html())
-    await this.getStockSummary();
 
-    setInterval(async () => {
-      await this.getStockSummary();
-    }, 3000);
-
-    this.stayOpen();
+    this.getStockSummary();
   }
 }
 

@@ -24,7 +24,7 @@
     "@types/cheerio": "^0.22.13",
     "axios": "^0.19.0",
     "cheerio": "^1.0.0-rc.3",
-    "elios-sdk": "^0.2.2"
+    "elios-sdk": "^1.1.1"
   },
   "devDependencies": {
     "css-loader": "^3.2.0",

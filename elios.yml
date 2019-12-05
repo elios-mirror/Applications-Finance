@@ -1,2 +1,3 @@
 name: "finance"
 language: "node_10"
+version: "0.1.0"

@@ -1,0 +1,26 @@
+[
+    {
+        "type": "dropdown",
+        "name": "followed",
+        "placeholer": "Choose symbol to follow",
+        "required": true,
+        "values": [
+            {
+                "text": "Tesla",
+                "value": "TSLA"
+            },
+            {
+                "text": "Microsoft Inc.",
+                "value": "MSFT"
+            },
+            {
+                "text": "Bitcoin to USD",
+                "value": "BTC-USD"
+            },
+            {
+                "text": "Europlasma S.A.",
+                "value": "ALEUP.PA"
+            }
+        ]
+    }
+]
